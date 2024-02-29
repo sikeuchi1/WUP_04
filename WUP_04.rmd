@@ -47,7 +47,9 @@ basicCN <- ggplot(data,aes(x=WORDSUM,y=DEGREE))
 basicCN + geom_boxplot()
 ```
 
-According to the boxplot, there shows difference in median values between every degree with LT high school being the lowest with a value of 8 compared to average score on the WORDSUM test in the graduate with the median as 11.
+
+
+ According to the boxplot, there shows difference in median values between every degree with LT high school being the lowest with a value of 8 compared to average score on the WORDSUM test in the graduate with the median as 11.
 <!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
 ### Numerical Descriptive Results
@@ -55,6 +57,8 @@ According to the boxplot, there shows difference in median values between every 
 favstats(WORDSUM~DEGREE,data=data)
 ```
  
+
+
  There is a deviation in the mean based on degree with the lowest being LT High school with an average score of 7.75 compared to the Graduate with the average score to be 10.095.
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
