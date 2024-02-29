@@ -1,0 +1,157 @@
+---
+title: "Numerical~Cat template"
+author: "Dr K"
+date: "November 25, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# t.test
+
+This is a template to serve as an example (cut and paste, change variable names)  
+we use the ucdavis1 dataset from the tigerstats package.
+
+```{r include=FALSE}
+require(tidyverse)
+require(tigerstats)
+data(ucdavis1)
+davisdata <- na.omit(ucdavis1)
+OurData <- chickwts
+```
+
+
+### Plot boxplots
+
+```{r}
+plot(momheight~Sex,data=davisdata)
+```
+
+## Now with ggplot - first select the basic data
+
+```{r}
+basicCN <- ggplot(ucdavis1,aes(x=Sex,y=dadheight))
+```
+## Now add in boxplot
+
+```{r}
+basicCN + geom_boxplot()
+```
+  
+  
+### get fancy  
+
+```{r}
+basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
+```
+
+# Numerical results
+
+```{r}
+favstats(momheight~Sex,data=ucdavis1)
+```
+
+# Inferential  
+  
+```{r}
+t.test(momheight~Sex,data=ucdavis1)
+```
+# One Way Anova
+  
+  
+
+### Plot boxplots
+
+```{r}
+plot(alcohol~Seat,data=davisdata)
+```
+   
+#### Using ggplot
+
+```{r}
+basicCN <- ggplot(davisdata,aes(x=Seat,y=alcohol))
+
+basicCN + geom_boxplot()
+```
+  
+# Numerical results
+
+```{r}
+favstats(alcohol~Seat,data=ucdavis1)
+```
+# Inferential
+
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+
+## When significant follow up with TukeyHSD  
+
+```{r}
+plot(TukeyHSD(model1))
+```
+
+## Another example  
+
+```{r}
+plot(weight~feed,data=OurData)
+```
+  
+  
+### Numerical Descriptive Results
+
+<!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
+
+```{r}
+favstats(weight~feed,data=OurData)
+```
+
+## Inferential Results
+
+<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
+```{r}
+model1 <- aov(weight~feed,data=OurData)
+summary.aov(model1)
+```
+```{r}
+#we specify the margins starting at the bottom and proceeding clockwise - thus 8.7 is the left side margin to hold the names of the factors
+par(mar = c(3, 8.7, 2, 2))
+plot(TukeyHSD(model1),las=2)
+```
+## Repeated Measures Anova  
+
+### This approach is going to use the LMER package and treat the subjects as random effects
+
+
+```{r include=FALSE}
+require(lme4)
+require(lmerTest)
+mydata <- sleepstudy
+str(mydata)
+```
+## lets fit a linear model explaining Reaction as a function Days
+
+```{r}
+basicNN <- ggplot(mydata,aes(y=Reaction,x=Days))
+```
+##Now add in scatterplot
+
+```{r}
+basicNN + geom_point() + geom_smooth(method="lm")
+```
+
+
+```{r}
+model.1 <- lm(Reaction~Days,data=mydata)
+summary.lm(model.1)
+```
+  
+## Now a random effects model 
+```{r}
+ fm1 <- lmer(Reaction ~ Days + (Days | Subject), mydata)
+summary(fm1)
+```
